@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7510549808849466161}
   - component: {fileID: 6099953176905248061}
-  - component: {fileID: 4841454617015015948}
-  - component: {fileID: 1085700347101216989}
-  - component: {fileID: 6982571174937505751}
   - component: {fileID: 246243730528782214}
-  - component: {fileID: 2193614527441119812}
   - component: {fileID: -1879072385425953288}
+  - component: {fileID: 3082396883596998214}
+  - component: {fileID: 8794694018912763382}
+  - component: {fileID: -3193198727523885215}
+  - component: {fileID: -3142339318379700341}
+  - component: {fileID: -8000791726334140886}
   m_Layer: 0
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -96,104 +97,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4841454617015015948
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3276716649494166362}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &1085700347101216989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3276716649494166362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 441814926
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &6982571174937505751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3276716649494166362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
-  ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
-  AutoOwnerAuthorityTickOffset: 1
-  PositionInterpolationType: 0
-  RotationInterpolationType: 0
-  ScaleInterpolationType: 0
-  PositionLerpSmoothing: 1
-  PositionMaxInterpolationTime: 0.1
-  RotationLerpSmoothing: 1
-  RotationMaxInterpolationTime: 0.1
-  ScaleLerpSmoothing: 1
-  ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
-  TickSyncChildren: 0
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  SwitchTransformSpaceWhenParented: 0
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!61 &246243730528782214
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -240,41 +143,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
---- !u!114 &2193614527441119812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3276716649494166362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f73a098cd3b2674890d235a90ab5a77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement_Netcode
-  ShowTopMostFoldoutHeaderGroup: 1
-  speed: 5
-  mystate: 0
-  skinID:
-    m_InternalValue: 1
-  walkAnimators:
-  - {fileID: 9100000, guid: b8fd31b92bc4a2b468035484242397f5, type: 2}
-  - {fileID: 9100000, guid: 933c9fffe6bf09c4bb83055755591c78, type: 2}
-  - {fileID: 9100000, guid: ff76b41f87c004345acfc358e180af15, type: 2}
-  - {fileID: 9100000, guid: 2410ac826090af443a91668b652ee6ab, type: 2}
-  - {fileID: 9100000, guid: 9490db3b093fbe946804f54fac70b874, type: 2}
-  idleSprites:
-  - {fileID: 21300000, guid: a9b9b331842a4e6479556ba6fa357989, type: 3}
-  - {fileID: 21300000, guid: 05508566aab23a04882b02c7c4eacfc1, type: 3}
-  - {fileID: 21300000, guid: 570edfe8421569844b383fff6dfd3ecb, type: 3}
-  - {fileID: 21300000, guid: cd6c19b1fb2e08848863f81aef9ff5d2, type: 3}
-  - {fileID: 21300000, guid: 2d9623d38fd64de40b21658b2b617573, type: 3}
-  kickSprites:
-  - {fileID: 21300000, guid: e0ac0a0b7b716704a906d20f14e9caff, type: 3}
-  - {fileID: 21300000, guid: 1ed9393559d9fca4a85ed629862e1c07, type: 3}
-  - {fileID: 21300000, guid: 91972be00c3a6db428b4033cb7608929, type: 3}
-  - {fileID: 21300000, guid: ed85dd12b043e704b8bf99181f25e906, type: 3}
-  - {fileID: 21300000, guid: 2651e4c5038aaae44aa445f55020b52a, type: 3}
 --- !u!95 &-1879072385425953288
 Animator:
   serializedVersion: 7
@@ -297,3 +165,157 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3082396883596998214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c65de06e68d2934885224e9cefa53b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  speed: 5
+  skinID: 5
+  walkAnimators:
+  - {fileID: 9100000, guid: b8fd31b92bc4a2b468035484242397f5, type: 2}
+  - {fileID: 9100000, guid: 933c9fffe6bf09c4bb83055755591c78, type: 2}
+  - {fileID: 9100000, guid: ff76b41f87c004345acfc358e180af15, type: 2}
+  - {fileID: 9100000, guid: 2410ac826090af443a91668b652ee6ab, type: 2}
+  - {fileID: 9100000, guid: 9490db3b093fbe946804f54fac70b874, type: 2}
+  idleSprites:
+  - {fileID: 21300000, guid: a9b9b331842a4e6479556ba6fa357989, type: 3}
+  - {fileID: 21300000, guid: 05508566aab23a04882b02c7c4eacfc1, type: 3}
+  - {fileID: 21300000, guid: 570edfe8421569844b383fff6dfd3ecb, type: 3}
+  - {fileID: 21300000, guid: cd6c19b1fb2e08848863f81aef9ff5d2, type: 3}
+  - {fileID: 21300000, guid: 2d9623d38fd64de40b21658b2b617573, type: 3}
+  kickSprites:
+  - {fileID: 21300000, guid: e0ac0a0b7b716704a906d20f14e9caff, type: 3}
+  - {fileID: 21300000, guid: 1ed9393559d9fca4a85ed629862e1c07, type: 3}
+  - {fileID: 21300000, guid: 91972be00c3a6db428b4033cb7608929, type: 3}
+  - {fileID: 21300000, guid: ed85dd12b043e704b8bf99181f25e906, type: 3}
+  - {fileID: 21300000, guid: 2651e4c5038aaae44aa445f55020b52a, type: 3}
+  canControl: 0
+  kickDuration: 0.35
+--- !u!50 &8794694018912763382
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &-3193198727523885215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 486142540
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &-3142339318379700341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &-8000791726334140886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3b7fc58bb8979498d757f19d978c35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetcode
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerMovement: {fileID: 3082396883596998214}
+  spriteRenderer: {fileID: 6099953176905248061}
+  kickDuration: 0.35
+  skinID:
+    m_InternalValue: 1
+  estado:
+    m_InternalValue: 0
+  flipX:
+    m_InternalValue: 0

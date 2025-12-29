@@ -20,7 +20,7 @@ public class GestionConectar : MonoBehaviour
     [SerializeField] private UnityTransport unityTransport;
 
     [Header("Relay")]
-    [SerializeField] private int maxJugadores = 4;  //El host y 3 clientes.
+    [SerializeField] private int maxJugadores = 5;  //El host y 4 clientes.
 
     private async void Awake()
     {
