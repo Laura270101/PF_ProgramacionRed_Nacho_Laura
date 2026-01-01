@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -3193198727523885215}
   - component: {fileID: -3142339318379700341}
   - component: {fileID: -8000791726334140886}
+  - component: {fileID: 8045281404801096554}
   m_Layer: 0
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -127,7 +128,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -141,7 +142,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 0.63, y: 1.14}
   m_EdgeRadius: 0
 --- !u!95 &-1879072385425953288
 Animator:
@@ -319,3 +320,21 @@ MonoBehaviour:
     m_InternalValue: 0
   flipX:
     m_InternalValue: 0
+  vecesPillado:
+    m_InternalValue: 0
+  movBloqueado:
+    m_InternalValue: 0
+--- !u!114 &8045281404801096554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fb5e259660db64483a8b3faaa4fc84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PillarTrigger
+  ShowTopMostFoldoutHeaderGroup: 1
+  cooldown: 2

@@ -23,6 +23,14 @@ public class PlayerNetcode : NetworkBehaviour
     public NetworkVariable<bool> flipX = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+    //Contador de veces atrapado:
+    public NetworkVariable<int> vecesPillado = new NetworkVariable<int>(
+        0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    //Bloqueo movimiento si te pillan
+    public NetworkVariable<bool> movBloqueado = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     private float kickTimerLocal = 0f;
     private NetEstado lastSentEstado = NetEstado.IDLE;
     private bool lastSentFlip = false;
@@ -35,8 +43,10 @@ public class PlayerNetcode : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Control local solo al owner
-        playerMovement.canControl = IsOwner;
+        Debug.Log($"[PlayerNetcode] OnNetworkSpawn -> IsServer={IsServer} IsOwner={IsOwner} OwnerClientId={OwnerClientId}");
+        // Control local solo al owner y si no esta bloqueado
+        RefreshControl();
+        movBloqueado.OnValueChanged += (_, __) => RefreshControl();
 
         // Aplicar skin cuando cambie (para todos)
         skinID.OnValueChanged += (_, newVal) => playerMovement.ApplySkin(newVal);
@@ -48,10 +58,28 @@ public class PlayerNetcode : NetworkBehaviour
         ApplyRemoteVisual();
     }
 
+    private void RefreshControl()
+    {
+        if (playerMovement == null)
+        {
+            return;
+        }
+        bool can = IsOwner && !movBloqueado.Value;
+        playerMovement.canControl = true;
+
+        Debug.Log($"[PlayerNetcode] RefreshControl -> owner={IsOwner} server={IsServer} clientId={OwnerClientId} locked={movBloqueado.Value} canControl={can}");
+    }
+
     private void Update()
     {
         // Solo el owner reporta estado/flip al server
         if (!IsOwner) return;
+
+        if (movBloqueado.Value)
+        {
+            SendEstado(NetEstado.IDLE, spriteRenderer.flipX);
+            return;
+        }
 
         // Sincronizar flip por red para que los demás vean hacia dónde miras
         // (tu PlayerMovement ya hace flip al moverse; aquí solo lo leemos)
