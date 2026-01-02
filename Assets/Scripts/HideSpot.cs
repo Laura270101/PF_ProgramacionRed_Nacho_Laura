@@ -34,12 +34,25 @@ public class HideSpot : MonoBehaviour
 
     private void Update()
     {
-        // Parpadeo siempre activo (si quieres que solo parpadee al acercarte, lo hacemos luego)
-        float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f; // 0..1
+        // Si no hay RoleManager aún, no hacemos nada
+        if (RoleManager.Instance == null)
+            return;
+
+        // Si YO soy el seeker
+        if (NetworkManager.Singleton != null &&
+            RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId)
+        {
+        
+            sr.color = new Color(baseRGB.r, baseRGB.g, baseRGB.b, sr.color.a);
+            return;
+        }
+
+        // Si NO soy seeker
+        float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
         float k = t * intensity;
 
         Color rgb = Color.Lerp(baseRGB, glowColor, k);
-        sr.color = new Color(rgb.r, rgb.g, rgb.b, sr.color.a); // respeta el alpha actual
+        sr.color = new Color(rgb.r, rgb.g, rgb.b, sr.color.a);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
