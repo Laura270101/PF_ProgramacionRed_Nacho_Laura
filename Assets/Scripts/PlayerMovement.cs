@@ -1,4 +1,6 @@
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
@@ -19,10 +21,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Sprite[] kickSprites;
 
     [Header("Control")]
-    public bool canControl = false;   // LOCAL ahora / IsOwner luego
+    public bool canControl = false;   // Control LOCAL (PlayerNetcode lo gestiona)
 
-    [Header("Kick")]
+    [Header("Kick / Hide")]
     [SerializeField] private float kickDuration = 0.35f;
+    [SerializeField] private float hiddenAlpha = 0.85f;
 
     private Animator animator;
     private SpriteRenderer sr;
@@ -30,23 +33,48 @@ public class PlayerMovement : MonoBehaviour
     private Estado estadoActual = Estado.IDLE;
     private float kickTimer = 0f;
 
+    // ===== ESCONDERSE =====
+    private bool nearHideSpot = false;
+    private bool isHidden = false;
+    private bool hideTransition = false;
+    private HideSpot currentHideSpot;
+
+    private string baseSortingLayer;
+    private int baseSortingOrder;
+    private Color baseColor;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        // Guardamos estado base del sprite
+        baseSortingLayer = sr.sortingLayerName;
+        baseSortingOrder = sr.sortingOrder;
+        baseColor = sr.color;
     }
 
     private void Start()
     {
-        //ApplySkin(skinID);
         SetEstado(Estado.IDLE);
     }
 
     private void Update()
     {
-        if (!canControl) return;
+        if (!canControl && !isHidden) return;
 
-        // Bloqueo durante kick
+        // ===== SALIR DEL ESCONDITE =====
+        if (isHidden)
+        {
+            if (Input.GetKeyDown(KeyCode.X))
+                ExitHide();
+            return;
+        }
+
+        // ===== BLOQUEO DURANTE TRANSICIÓN DE ESCONDERSE =====
+        if (hideTransition) return;
+
+        // ===== BLOQUEO DURANTE KICK =====
         if (kickTimer > 0f)
         {
             kickTimer -= Time.deltaTime;
@@ -56,14 +84,26 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // KICK
+        // ===== ESCONDERSE (X CERCA DE ESCONDITE) =====
+        if (nearHideSpot && Input.GetKeyDown(KeyCode.X))
+        {
+            // Si eres seeker, no puedes esconderte
+            if (RoleManager.Instance != null &&
+                RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId)
+                return;
+
+            StartCoroutine(HideAfterKick());
+            return;
+        }
+
+        // ===== KICK NORMAL =====
         if (Input.GetKeyDown(KeyCode.X))
         {
             StartKick();
             return;
         }
 
-        // Movimiento 
+        // ===== MOVIMIENTO =====
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -77,10 +117,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(Vector2 dir)
     {
-        // Normalizamos para que diagonal no sea más rápido
         dir.Normalize();
 
-        // Flip SOLO según horizontal
         if (Mathf.Abs(dir.x) > 0.01f)
             sr.flipX = dir.x < 0f;
 
@@ -96,6 +134,65 @@ public class PlayerMovement : MonoBehaviour
         kickTimer = kickDuration;
     }
 
+    // ===== SECUENCIA ESCONDERSE =====
+    private IEnumerator HideAfterKick()
+    {
+        hideTransition = true;
+
+        // Forzamos el kick visual
+        StartKick();
+
+        // Bloqueamos control mientras dura la animación
+        canControl = false;
+
+        yield return new WaitForSeconds(kickDuration);
+
+        EnterHide();
+        hideTransition = false;
+    }
+
+    private void EnterHide()
+    {
+        isHidden = true;
+
+        // Player detrás del objeto
+        sr.sortingLayerName = currentHideSpot.SortingLayer;
+        sr.sortingOrder = currentHideSpot.SortingOrder - 1;
+
+        // Un poco transparente
+        var c = sr.color;
+        c.a = hiddenAlpha;
+        sr.color = c;
+
+        // El objeto se vuelve transparente
+        currentHideSpot.SetAlpha(true);
+
+      
+    }
+
+    private void ExitHide()
+    {
+        isHidden = false;
+
+        // Restaurar visual
+        sr.sortingLayerName = baseSortingLayer;
+        sr.sortingOrder = baseSortingOrder;
+        sr.color = baseColor;
+
+        currentHideSpot?.SetAlpha(false);
+
+        canControl = true;
+       
+    }
+
+    // ===== LLAMADO DESDE HideSpot =====
+    public void SetNearHideSpot(bool value, HideSpot spot)
+    {
+        nearHideSpot = value;
+        currentHideSpot = spot;
+    }
+
+    // ===== VISUALES =====
     private void SetEstado(Estado nuevo)
     {
         if (estadoActual == nuevo) return;
@@ -140,19 +237,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // ===== USADO POR PlayerNetcode =====
     public void ForceIdleVisual()
     {
-        // Mismo efecto que IDLE
-        // (Reutiliza tu SetEstado internamente: hay que hacerlo accesible o replicar)
-        // Solución simple: reutilizamos ApplySkin que ya setea IDLE visual.
         ApplySkin(skinID);
     }
 
     public void ForceKickVisual()
     {
-        // Simula KICK sin input
-        // Ojo: aquí necesitamos acceso a tus arrays y skinID ya lo tienes.
-        // Copiamos el comportamiento de SetEstado(KICK) sin tocar el estado interno:
         animator.enabled = false;
         int i = Mathf.Clamp(skinID - 1, 0, 4);
         sr.sprite = kickSprites[i];
@@ -160,15 +252,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void ForceWalkVisual()
     {
-        // Pone el animator en Walk sin mover
         animator.enabled = true;
         int i = Mathf.Clamp(skinID - 1, 0, 4);
         animator.runtimeAnimatorController = walkAnimators[i];
         animator.Play("Walk", 0, 0f);
     }
-
-
-
-
-
 }
