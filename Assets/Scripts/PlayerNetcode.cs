@@ -1,24 +1,18 @@
-using UnityEngine;
+using System.Globalization;
 using Unity.Netcode;
-using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(NetworkObject))]
 public class PlayerNetcode : NetworkBehaviour
 {
-    public enum NetEstado : int { IDLE = 0, WALK = 1}
+    public enum NetEstado : int { IDLE = 0, WALK = 1 }
 
     [Header("Refs")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    [Header("Hide")]
-    public NetworkVariable<bool> isHidden = new NetworkVariable<bool>(
-    false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    // ===== NET VARS =====
 
-    public NetworkVariable<float> hideTimeLeft = new NetworkVariable<float>(
-        0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
-    // Server -> Everyone
     public NetworkVariable<int> skinID = new NetworkVariable<int>(
         1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -28,70 +22,90 @@ public class PlayerNetcode : NetworkBehaviour
     public NetworkVariable<bool> flipX = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-    //Contador de veces atrapado:
     public NetworkVariable<int> vecesPillado = new NetworkVariable<int>(
         0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-    //Bloqueo movimiento si te pillan
     public NetworkVariable<bool> movBloqueado = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+    // CAMBIO: ESTADO DE ESCONDIDO POR RED
+    public NetworkVariable<bool> isHidden = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // CAMBIO: EN QUÉ HIDESPOT ESTÁ (NetObjectId). ulong.MaxValue = ninguno
+    public NetworkVariable<ulong> currentHideSpotId = new NetworkVariable<ulong>(
+        ulong.MaxValue, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // ===== LOCAL STATE (no net) =====
     private NetEstado lastSentEstado = NetEstado.IDLE;
     private bool lastSentFlip = false;
+
+    // CAMBIO: GUARDAMOS EL HIDESPOT CERCANO EN LOCAL
+    private ulong nearHideSpotId = ulong.MaxValue;
+
+    // CAMBIO: GUARDAMOS VISUAL BASE PARA RESTAURAR
+    private string baseSortingLayer;
+    private int baseSortingOrder;
+    private Color baseColor;
 
     private void Awake()
     {
         if (playerMovement == null) playerMovement = GetComponent<PlayerMovement>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+
+        baseSortingLayer = spriteRenderer.sortingLayerName;
+        baseSortingOrder = spriteRenderer.sortingOrder;
+        baseColor = spriteRenderer.color;
     }
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"[PlayerNetcode] OnNetworkSpawn -> IsServer={IsServer} IsOwner={IsOwner} OwnerClientId={OwnerClientId}");
-        // Control local solo al owner y si no esta bloqueado
+        // CAMBIO: REFRESH CONTROL CORRECTO
         RefreshControl();
         movBloqueado.OnValueChanged += (_, __) => RefreshControl();
+        isHidden.OnValueChanged += (_, __) => RefreshControl();
 
-        // Aplicar skin cuando cambie (para todos)
+        // Aplicar skin para todos
         skinID.OnValueChanged += (_, newVal) => playerMovement.ApplySkin(newVal);
         playerMovement.ApplySkin(skinID.Value);
 
-        // Aplicar visuales cuando cambie estado/flip (para todos)
+        // Visuales remotos
         estado.OnValueChanged += (_, __) => ApplyRemoteVisual();
         flipX.OnValueChanged += (_, __) => ApplyRemoteVisual();
+
+        // CAMBIO: CUANDO CAMBIA currentHideSpotId / isHidden, actualizamos visual de esconder
+        currentHideSpotId.OnValueChanged += (_, __) => ApplyHideVisual();
+        isHidden.OnValueChanged += (_, __) => ApplyHideVisual();
+
         ApplyRemoteVisual();
+        ApplyHideVisual();
     }
 
     private void RefreshControl()
     {
-        if (playerMovement == null)
-        {
-            return;
-        }
-        bool can = IsOwner && !movBloqueado.Value;
-        playerMovement.canControl = true;
+        if (playerMovement == null) return;
 
-        Debug.Log($"[PlayerNetcode] RefreshControl -> owner={IsOwner} server={IsServer} clientId={OwnerClientId} locked={movBloqueado.Value} canControl={can}");
+        bool can = IsOwner && !movBloqueado.Value && !isHidden.Value;
+
+        // CAMBIO: ANTES ESTABA EN TRUE SIEMPRE. AHORA USA "can"
+        playerMovement.canControl = can;
+
+        Debug.Log($"[PlayerNetcode] RefreshControl -> owner={IsOwner} locked={movBloqueado.Value} hidden={isHidden.Value} canControl={can}");
     }
 
     private void Update()
     {
-        // Solo el owner reporta estado/flip al server
         if (!IsOwner) return;
 
-        if (movBloqueado.Value)
+        // Si estoy escondido o bloqueado, fuerzo IDLE por red
+        if (movBloqueado.Value || isHidden.Value)
         {
             SendEstado(NetEstado.IDLE, spriteRenderer.flipX);
             return;
         }
 
-        // Sincronizar flip por red para que los demás vean hacia dónde miras
-        // (tu PlayerMovement ya hace flip al moverse; aquí solo lo leemos)
         bool currentFlip = spriteRenderer.flipX;
 
-        
-
-        // Si se mueve, WALK; si no, IDLE
         float hh = Input.GetAxisRaw("Horizontal");
         float vv = Input.GetAxisRaw("Vertical");
         bool isMoving = (hh * hh + vv * vv) > 0.01f;
@@ -101,7 +115,6 @@ public class PlayerNetcode : NetworkBehaviour
 
     private void SendEstado(NetEstado e, bool fx)
     {
-        // Evitar spamear RPC si no cambia nada
         if (e == lastSentEstado && fx == lastSentFlip) return;
         lastSentEstado = e;
         lastSentFlip = fx;
@@ -118,35 +131,11 @@ public class PlayerNetcode : NetworkBehaviour
 
     private void ApplyRemoteVisual()
     {
-        // Flip siempre
         spriteRenderer.flipX = flipX.Value;
 
-        // ===== ESTADO ESCONDIDO =====
-        if (isHidden.Value)
-        {
-            // Parpadeo rojo
-            float t = (Mathf.Sin(Time.time * 6f) + 1f) * 0.5f;
-            spriteRenderer.color = Color.Lerp(Color.white, Color.red, t);
+        // CAMBIO: SI ESTOY ESCONDIDO, NO FORZAMOS WALK/IDLE AQUÍ
+        if (isHidden.Value) return;
 
-            // Si YO soy el seeker, no veo a los escondidos
-            if (RoleManager.Instance != null &&
-                RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId)
-            {
-                spriteRenderer.enabled = false;
-            }
-            else
-            {
-                spriteRenderer.enabled = true;
-            }
-
-            return; // no aplicamos IDLE/WALK
-        }
-
-        // ===== NO ESCONDIDO =====
-        spriteRenderer.enabled = true;
-        spriteRenderer.color = Color.white;
-
-        // Estado normal
         if (IsOwner) return;
 
         switch ((NetEstado)estado.Value)
@@ -160,31 +149,168 @@ public class PlayerNetcode : NetworkBehaviour
         }
     }
 
-    private Coroutine hideRoutine;
+    // ====== HIDESPOT (LOCAL) ======
 
-    [ServerRpc]
-    public void EnterHideServerRpc()
+    // CAMBIO: HideSpot llama a esto SOLO en local para decir "estás cerca"
+    public void SetNearHideSpotClient(ulong hideSpotId, bool near)
     {
-        if (isHidden.Value) return;
+        if (!IsOwner) return;
 
-        isHidden.Value = true;
-        hideTimeLeft.Value = 5f;
-
-        if (hideRoutine != null)
-            StopCoroutine(hideRoutine);
-
-        hideRoutine = StartCoroutine(HideCountdown());
+        if (near) nearHideSpotId = hideSpotId;
+        else if (nearHideSpotId == hideSpotId) nearHideSpotId = ulong.MaxValue;
     }
 
-    private IEnumerator HideCountdown()
+    public bool HasNearHideSpot => nearHideSpotId != ulong.MaxValue;
+
+    // ====== HIDESPOT (SERVER REQUESTS) ======
+
+    // CAMBIO: ENTRAR SIENDO HIDER
+    [ServerRpc]
+    public void RequestEnterHideServerRpc(ulong hideSpotId)
     {
-        while (hideTimeLeft.Value > 0f)
+        if (!IsServer) return;
+
+        // seeker no puede esconderse
+        if (RoleManager.Instance != null && RoleManager.Instance.seekerId.Value == OwnerClientId) return;
+
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(hideSpotId, out var netObj)) return;
+
+        var spot = netObj.GetComponent<HideSpot>();
+        if (spot == null) return;
+
+        // Si está ocupado, nada
+        if (spot.occupantId.Value != ulong.MaxValue) return;
+
+        // ocupar
+        spot.occupantId.Value = OwnerClientId;
+
+        // marcar player
+        isHidden.Value = true;
+        currentHideSpotId.Value = hideSpotId;
+    }
+
+    // CAMBIO: SALIR SIENDO HIDER
+    [ServerRpc]
+    public void RequestExitHideServerRpc()
+    {
+        if (!IsServer) return;
+
+        if (!isHidden.Value) return;
+        if (currentHideSpotId.Value == ulong.MaxValue) return;
+
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(currentHideSpotId.Value, out var netObj))
         {
-            yield return new WaitForSeconds(1f);
-            hideTimeLeft.Value -= 1f;
+            var spot = netObj.GetComponent<HideSpot>();
+            if (spot != null && spot.occupantId.Value == OwnerClientId)
+            {
+                spot.occupantId.Value = ulong.MaxValue;
+            }
         }
 
         isHidden.Value = false;
-        hideTimeLeft.Value = 0f;
+        currentHideSpotId.Value = ulong.MaxValue;
+    }
+
+    // CAMBIO: SEEKER REVELA HIDESPOT (SACA AL QUE ESTE DENTRO)
+    [ServerRpc]
+    public void RequestRevealHideSpotServerRpc(ulong hideSpotId)
+    {
+        if (!IsServer) return;
+        if (RoleManager.Instance == null) return;
+
+        // Solo seeker
+        if (RoleManager.Instance.seekerId.Value != OwnerClientId) return;
+
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(hideSpotId, out var netObj)) return;
+
+        var spot = netObj.GetComponent<HideSpot>();
+        if (spot == null) return;
+
+        // si está vacío nada
+        if (spot.occupantId.Value == ulong.MaxValue) return;
+
+        ulong caughtId = spot.occupantId.Value;
+
+        // liberar spot
+        spot.occupantId.Value = ulong.MaxValue;
+
+        // expulsar al pillado
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(caughtId, out var client) && client.PlayerObject != null)
+        {
+            var pNet = client.PlayerObject.GetComponent<PlayerNetcode>();
+            if (pNet != null)
+            {
+                pNet.isHidden.Value = false;
+                pNet.currentHideSpotId.Value = ulong.MaxValue;
+            }
+        }
+
+        // procesar catch (cambia seeker, suma contador, stun, etc.)
+        RoleManager.Instance.ProcessCatchServer(OwnerClientId, caughtId);
+    }
+
+    // ===== VISUAL / POSICION AL ESCONDERSE =====
+    private void ApplyHideVisual()
+    {
+        if (!isHidden.Value)
+        {
+            // restaurar visual normal
+            spriteRenderer.enabled = true;
+            spriteRenderer.color = baseColor;
+            spriteRenderer.sortingLayerName = baseSortingLayer;
+            spriteRenderer.sortingOrder = baseSortingOrder;
+            return;
+        }
+
+        // Si estoy escondido:
+        // - el seeker NO debe ver al escondido (renderer off en su cliente)
+        // - los hiders sí lo ven (renderer on)
+        if (RoleManager.Instance != null && NetworkManager.Singleton != null)
+        {
+            bool iAmSeekerLocal = RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId;
+            spriteRenderer.enabled = !iAmSeekerLocal;
+        }
+
+        // CAMBIO: SNAP A POSICION DEL HIDESPOT (EN TODOS, ASÍ QUEDA DENTRO)
+        if (currentHideSpotId.Value != ulong.MaxValue &&
+            NetworkManager.Singleton != null &&
+            NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(currentHideSpotId.Value, out var netObj))
+        {
+            var spot = netObj.GetComponent<HideSpot>();
+            if (spot != null)
+            {
+                transform.position = spot.HideWorldPos;
+
+                // poner al jugador "detrás" del spot
+                spriteRenderer.sortingLayerName = spot.SortingLayer;
+                spriteRenderer.sortingOrder = spot.SortingOrder - 1;
+            }
+        }
+    }
+
+    // ===== HELPERS PARA INPUT (LOS LLAMA PlayerMovement) =====
+    public void TryEnterNearSpot()
+    {
+        if (!IsOwner) return;
+        if (nearHideSpotId == ulong.MaxValue) return;
+        if (isHidden.Value) return;
+
+        RequestEnterHideServerRpc(nearHideSpotId);
+    }
+
+    public void TryExitSpot()
+    {
+        if (!IsOwner) return;
+        if (!isHidden.Value) return;
+
+        RequestExitHideServerRpc();
+    }
+
+    public void TryRevealNearSpot()
+    {
+        if (!IsOwner) return;
+        if (nearHideSpotId == ulong.MaxValue) return;
+
+        RequestRevealHideSpotServerRpc(nearHideSpotId);
     }
 }

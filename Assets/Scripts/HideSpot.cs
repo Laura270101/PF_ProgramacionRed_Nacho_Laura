@@ -1,118 +1,90 @@
 ﻿using UnityEngine;
 using Unity.Netcode;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class HideSpot : MonoBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class HideSpot : NetworkBehaviour
 {
-    [Header("Hide (alpha cuando te escondes)")]
-    [Range(0.1f, 1f)]
-    [SerializeField] private float alphaWhenHiding = 0.55f;
+    [Header("PULSO SOLO PARA HIDER (alpha)")]
+    [Range(0.05f, 0.9f)]
+    [SerializeField] private float minAlpha = 0.35f;
 
-    [Header("Visual (parpadeo rojo)")]
-    [SerializeField] private Color glowColor = new Color(1f, 0.15f, 0.15f, 1f); // rojo
-    [SerializeField] private float pulseSpeed = 2.5f;
-    [Range(0f, 1f)]
-    [SerializeField] private float intensity = 0.7f;
+    [Range(0.1f, 1f)]
+    [SerializeField] private float maxAlpha = 1.0f;
+
+    [SerializeField] private float pulseSpeed = 2.0f;
+
+    [Header("SI ESTA OCUPADO, PARPADEA MAS FUERTE (HIDER)")]
+    [SerializeField] private float occupiedPulseBoost = 1.5f;
+
+    [Header("POSICION DONDE SE METE EL JUGADOR (opcional)")]
+    [SerializeField] private Vector3 hideOffset = Vector3.zero;
 
     private SpriteRenderer sr;
+    private Color baseColor;
 
-    // Guardamos el color base (sin tocar alpha) y el alpha base
-    private Color baseRGB;
-    private float baseAlpha;
+    // ulong.MaxValue = vacío
+    public NetworkVariable<ulong> occupantId = new NetworkVariable<ulong>(
+        ulong.MaxValue,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
 
-    // Para que el mensaje salga solo la 1ª vez por jugador y por escondite
-    private static HashSet<string> shown = new HashSet<string>();
+    public ulong NetId => NetworkObjectId;
+
+    public Vector3 HideWorldPos => transform.position + hideOffset;
+
+    public int SortingOrder => sr != null ? sr.sortingOrder : 0;
+    public string SortingLayer => sr != null ? sr.sortingLayerName : "Default";
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        baseAlpha = sr.color.a;
-        baseRGB = new Color(sr.color.r, sr.color.g, sr.color.b, 1f);
+        baseColor = sr.color;
+
+        // CAMBIO: Asegurar que el trigger está activo
+        var col = GetComponent<Collider2D>();
+        col.isTrigger = true;
     }
 
     private void Update()
     {
-        // Si no hay RoleManager aún, no hacemos nada
-        if (RoleManager.Instance == null)
-            return;
+        if (RoleManager.Instance == null || NetworkManager.Singleton == null) return;
 
-        // Si YO soy el seeker
-        if (NetworkManager.Singleton != null &&
-            RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId)
+        bool iAmSeeker = RoleManager.Instance.seekerId.Value == NetworkManager.Singleton.LocalClientId;
+        bool occupied = occupantId.Value != ulong.MaxValue;
+
+        if (iAmSeeker)
         {
-        
-            sr.color = new Color(baseRGB.r, baseRGB.g, baseRGB.b, sr.color.a);
+            // CAMBIO: SEEKER ve normal SIEMPRE
+            sr.color = new Color(baseColor.r, baseColor.g, baseColor.b, 1f);
             return;
         }
 
-        // Si NO soy seeker
-        float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
-        float k = t * intensity;
+        // CAMBIO: HIDER ve pulso de alpha (y más fuerte si está ocupado)
+        float speed = pulseSpeed * (occupied ? occupiedPulseBoost : 1f);
+        float t = (Mathf.Sin(Time.time * speed) + 1f) * 0.5f;
+        float a = Mathf.Lerp(minAlpha, maxAlpha, t);
 
-        Color rgb = Color.Lerp(baseRGB, glowColor, k);
-        sr.color = new Color(rgb.r, rgb.g, rgb.b, sr.color.a);
+        sr.color = new Color(baseColor.r, baseColor.g, baseColor.b, a);
     }
 
+    // CAMBIO: SOLO PARA DETECTAR "ESTOY CERCA" EN LOCAL (NO RPC AQUÍ)
     private void OnTriggerEnter2D(Collider2D other)
     {
-
-        var otherNet = other.GetComponentInParent<PlayerNetcode>();
-        if (otherNet != null && otherNet.isHidden.Value)
-        {
-            // No se puede pillar a alguien escondido
-            return;
-        }
-
         var pNet = other.GetComponentInParent<PlayerNetcode>();
-        if (pNet == null) return;
-
-        // Si es seeker, no puede esconderse
-        if (RoleManager.Instance.seekerId.Value == pNet.OwnerClientId)
-            return;
-
-        // Pedimos al SERVER escondernos
-        if (pNet.IsOwner)
-            pNet.EnterHideServerRpc();
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        var pNet = other.GetComponentInParent<PlayerNetcode>();
-        if (pNet == null || !pNet.IsOwner) return;
-
-        // Hablamos con PlayerMovement (que ya tiene la lógica integrada)
-        var pm = pNet.GetComponent<PlayerMovement>();
-        if (pm != null)
+        if (pNet != null && pNet.IsOwner)
         {
-            pm.SetNearHideSpot(true, this);
+            pNet.SetNearHideSpotClient(NetId, true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         var pNet = other.GetComponentInParent<PlayerNetcode>();
-        if (pNet == null || !pNet.IsOwner) return;
-
-        var pm = pNet.GetComponent<PlayerMovement>();
-        if (pm != null)
+        if (pNet != null && pNet.IsOwner)
         {
-            pm.SetNearHideSpot(false, null);
+            pNet.SetNearHideSpotClient(NetId, false);
         }
-
     }
-
-    // ===== VISUAL: alpha del objeto cuando estás escondido =====
-    public void SetAlpha(bool hiding)
-    {
-        if (sr == null) return;
-
-        var c = sr.color;
-        c.a = hiding ? alphaWhenHiding : baseAlpha;
-        sr.color = c;
-    }
-
-    public int SortingOrder => sr != null ? sr.sortingOrder : 0;
-    public string SortingLayer => sr != null ? sr.sortingLayerName : "Default";
 }

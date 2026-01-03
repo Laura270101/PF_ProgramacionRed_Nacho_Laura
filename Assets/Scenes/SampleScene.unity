@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 153709091}
   - component: {fileID: 153709092}
   - component: {fileID: 153709093}
+  - component: {fileID: 153709094}
   m_Layer: 0
   m_Name: arbusto11_0
   m_TagString: Untagged
@@ -636,10 +637,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &153709094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153709089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1114228523
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &172681445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,6 +1773,7 @@ GameObject:
   - component: {fileID: 415166353}
   - component: {fileID: 415166354}
   - component: {fileID: 415166355}
+  - component: {fileID: 415166356}
   m_Layer: 0
   m_Name: "ba\xF1o1_0"
   m_TagString: Untagged
@@ -1882,10 +1912,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &415166356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415166351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3309705385
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &419522291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,6 +2915,7 @@ GameObject:
   - component: {fileID: 492589222}
   - component: {fileID: 492589223}
   - component: {fileID: 492589224}
+  - component: {fileID: 492589225}
   m_Layer: 0
   m_Name: roca3_0
   m_TagString: Untagged
@@ -2995,10 +3054,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &492589225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492589220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 4261076465
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3720,6 +3807,7 @@ GameObject:
   - component: {fileID: 602290281}
   - component: {fileID: 602290282}
   - component: {fileID: 602290283}
+  - component: {fileID: 602290284}
   m_Layer: 0
   m_Name: arbusto6_0 (1)
   m_TagString: Untagged
@@ -3858,10 +3946,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &602290284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602290279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 418115469
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -5663,6 +5779,7 @@ GameObject:
   - component: {fileID: 1000772748}
   - component: {fileID: 1000772749}
   - component: {fileID: 1000772750}
+  - component: {fileID: 1000772751}
   m_Layer: 0
   m_Name: agujero_1
   m_TagString: Untagged
@@ -5801,10 +5918,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1000772751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000772746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2563146549
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1012488420
 GameObject:
   m_ObjectHideFlags: 0
@@ -5954,6 +6099,7 @@ GameObject:
   - component: {fileID: 1013562014}
   - component: {fileID: 1013562015}
   - component: {fileID: 1013562016}
+  - component: {fileID: 1013562017}
   m_Layer: 0
   m_Name: basura3_0 (1)
   m_TagString: Untagged
@@ -6092,10 +6238,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1013562017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013562012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2847551566
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1031383212
 GameObject:
   m_ObjectHideFlags: 0
@@ -6519,6 +6693,7 @@ GameObject:
   - component: {fileID: 1251887355}
   - component: {fileID: 1251887356}
   - component: {fileID: 1251887358}
+  - component: {fileID: 1251887359}
   m_Layer: 0
   m_Name: tienda_0
   m_TagString: Untagged
@@ -6657,10 +6832,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1251887359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251887353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3374929663
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1257721680
 GameObject:
   m_ObjectHideFlags: 0
@@ -6863,6 +7066,7 @@ GameObject:
   - component: {fileID: 1300558725}
   - component: {fileID: 1300558726}
   - component: {fileID: 1300558727}
+  - component: {fileID: 1300558728}
   m_Layer: 0
   m_Name: muro_0 (2)
   m_TagString: Untagged
@@ -7001,10 +7205,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1300558728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300558723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2422800336
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1304350107
 GameObject:
   m_ObjectHideFlags: 0
@@ -7016,6 +7248,7 @@ GameObject:
   - component: {fileID: 1304350108}
   - component: {fileID: 1304350109}
   - component: {fileID: 1304350110}
+  - component: {fileID: 1304350112}
   - component: {fileID: 1304350111}
   m_Layer: 0
   m_Name: arbusto12_0
@@ -7155,10 +7388,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1304350112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304350107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3951827059
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1352333406
 GameObject:
   m_ObjectHideFlags: 0
@@ -8978,6 +9239,7 @@ GameObject:
   - component: {fileID: 1809828681}
   - component: {fileID: 1809828682}
   - component: {fileID: 1809828683}
+  - component: {fileID: 1809828684}
   m_Layer: 0
   m_Name: basura1_0
   m_TagString: Untagged
@@ -9116,10 +9378,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1809828684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809828679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3922408415
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1812446664
 GameObject:
   m_ObjectHideFlags: 0
@@ -9615,6 +9905,7 @@ GameObject:
   - component: {fileID: 1853615104}
   - component: {fileID: 1853615105}
   - component: {fileID: 1853615106}
+  - component: {fileID: 1853615107}
   m_Layer: 0
   m_Name: "ba\xF1o_0"
   m_TagString: Untagged
@@ -9753,10 +10044,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &1853615107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853615102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 437425499
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1890926728
 GameObject:
   m_ObjectHideFlags: 0
@@ -10271,6 +10590,7 @@ GameObject:
   - component: {fileID: 2007702678}
   - component: {fileID: 2007702679}
   - component: {fileID: 2007702680}
+  - component: {fileID: 2007702681}
   m_Layer: 0
   m_Name: extra8_0
   m_TagString: Untagged
@@ -10409,10 +10729,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &2007702681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007702676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 318592566
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &2044423345
 GameObject:
   m_ObjectHideFlags: 0
@@ -10699,6 +11047,7 @@ GameObject:
   - component: {fileID: 2128975027}
   - component: {fileID: 2128975028}
   - component: {fileID: 2128975029}
+  - component: {fileID: 2128975030}
   m_Layer: 0
   m_Name: caja_0
   m_TagString: Untagged
@@ -10837,10 +11186,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7980c43abfbc2a74ba02bf05d4a9b1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideSpot
-  alphaWhenHiding: 0.55
-  glowColor: {r: 1, g: 0.15, b: 0.15, a: 1}
+  ShowTopMostFoldoutHeaderGroup: 1
+  minAlpha: 0.35
+  maxAlpha: 1
   pulseSpeed: 2.5
-  intensity: 0.7
+  occupiedPulseBoost: 1.5
+  occupantId:
+    m_InternalValue: 18446744073709551615
+--- !u!114 &2128975030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128975025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 358910055
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &2140222530
 GameObject:
   m_ObjectHideFlags: 0
