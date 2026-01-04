@@ -24,7 +24,7 @@ public class HideSpot : NetworkBehaviour
     private SpriteRenderer sr;
     private Color baseColor;
 
-    // ulong.MaxValue = vacío
+    
     public NetworkVariable<ulong> occupantId = new NetworkVariable<ulong>(
         ulong.MaxValue,
         NetworkVariableReadPermission.Everyone,
@@ -42,7 +42,7 @@ public class HideSpot : NetworkBehaviour
         sr = GetComponent<SpriteRenderer>();
         baseColor = sr.color;
 
-        // CAMBIO: Asegurar que el trigger está activo
+        
         var col = GetComponent<Collider2D>();
         col.isTrigger = true;
     }
@@ -56,12 +56,12 @@ public class HideSpot : NetworkBehaviour
 
         if (iAmSeeker)
         {
-            // CAMBIO: SEEKER ve normal SIEMPRE
+            
             sr.color = new Color(baseColor.r, baseColor.g, baseColor.b, 1f);
             return;
         }
 
-        // CAMBIO: HIDER ve pulso de alpha (y más fuerte si está ocupado)
+        
         float speed = pulseSpeed * (occupied ? occupiedPulseBoost : 1f);
         float t = (Mathf.Sin(Time.time * speed) + 1f) * 0.5f;
         float a = Mathf.Lerp(minAlpha, maxAlpha, t);
@@ -69,7 +69,7 @@ public class HideSpot : NetworkBehaviour
         sr.color = new Color(baseColor.r, baseColor.g, baseColor.b, a);
     }
 
-    // CAMBIO: SOLO PARA DETECTAR "ESTOY CERCA" EN LOCAL (NO RPC AQUÍ)
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         var pNet = other.GetComponentInParent<PlayerNetcode>();

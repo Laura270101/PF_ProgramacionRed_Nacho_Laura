@@ -42,24 +42,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // CAMBIO: SOLO EL OWNER LEE INPUT
+        
         if (pNet == null || !pNet.IsOwner) return;
 
-        // CAMBIO: X = INTERACCIÓN CON HIDESPOT
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
             if (RoleManager.Instance != null && Unity.Netcode.NetworkManager.Singleton != null)
             {
                 bool iAmSeeker = RoleManager.Instance.seekerId.Value == Unity.Netcode.NetworkManager.Singleton.LocalClientId;
 
-                // Seeker: revelar spot cercano
+                
                 if (iAmSeeker)
                 {
                     pNet.TryRevealNearSpot();
                     return;
                 }
 
-                // Hider: si está escondido -> salir, si no -> entrar
+                
                 if (pNet.isHidden.Value) pNet.TryExitSpot();
                 else pNet.TryEnterNearSpot();
 
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!canControl) return;
 
-        // MOVIMIENTO
+        
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         RefreshVisual();
     }
 
-    // ===== USADO POR PlayerNetcode =====
+    
     public void ForceIdleVisual()
     {
         estadoActual = Estado.IDLE;

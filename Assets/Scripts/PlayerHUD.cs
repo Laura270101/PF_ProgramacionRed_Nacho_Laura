@@ -22,13 +22,13 @@ public class PlayerHUD : NetworkBehaviour
             return;
         }
 
-        // Buscar UI en escena por nombre (Opción A)
+        
         txtRol = GameObject.Find("Txt_Rol")?.GetComponent<TMP_Text>();
         txtVecesPillado = GameObject.Find("Txt_VecesPillado")?.GetComponent<TMP_Text>();
 
         RefreshAll();
 
-        // Suscripciones
+        
         if (pNet != null)
             pNet.vecesPillado.OnValueChanged += OnVecesPilladoChanged;
 
@@ -58,7 +58,7 @@ public class PlayerHUD : NetworkBehaviour
     {
         if (txtRol == null)
         {
-            // Si no lo encontró al spawn (p.ej. UI aún no estaba), intenta otra vez
+            
             txtRol = GameObject.Find("Txt_Rol")?.GetComponent<TMP_Text>();
             if (txtRol == null) return;
         }
