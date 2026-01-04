@@ -19,6 +19,13 @@ public class HideTimerUI : MonoBehaviour
         timerText.gameObject.SetActive(true);
     }
 
+    // NUEVO: mostrar texto directo
+    public void ShowMessage(string msg)
+    {
+        timerText.text = msg;
+        timerText.gameObject.SetActive(true);
+    }
+
     public void Hide()
     {
         timerText.text = "";

@@ -15,7 +15,7 @@ public class SkinManager : MonoBehaviour
     {
         if (NetworkManager.Singleton != null)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
         }
     }
 

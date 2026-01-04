@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using Unity.Netcode;
 
@@ -41,7 +41,7 @@ public class RoleManager : NetworkBehaviour
         }
     }
 
-    // CAMBIO: FUNCIÓN CENTRAL PARA PROCESAR UNA "PILLADA"
+    // CAMBIO: FUNCIÃ“N CENTRAL PARA PROCESAR UNA "PILLADA"
     public void ProcessCatchServer(ulong catcherClientId, ulong caughtClientId)
     {
         if (!IsServer) return;
@@ -66,7 +66,7 @@ public class RoleManager : NetworkBehaviour
         seekerId.Value = caughtClientId;
         Debug.Log($"[RoleManager][SERVER] Seeker cambiado -> {seekerId.Value}");
 
-        // CAMBIO: STUN AL NUEVO SEEKER (o al pillado, según tu diseño)
+        // CAMBIO: STUN AL NUEVO SEEKER (o al pillado, segÃºn tu diseÃ±o)
         StopAllCoroutines();
         StartCoroutine(StunCoroutine(caughtNet));
     }

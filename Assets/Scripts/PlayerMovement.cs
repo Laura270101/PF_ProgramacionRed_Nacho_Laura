@@ -36,7 +36,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        SetEstado(Estado.IDLE);
+        RefreshVisual();
+       
     }
 
     private void Update()
@@ -98,6 +99,12 @@ public class PlayerMovement : MonoBehaviour
         if (estadoActual == nuevo) return;
         estadoActual = nuevo;
 
+        RefreshVisual();
+
+    }
+
+    private void RefreshVisual()
+    {
         int i = Mathf.Clamp(skinID - 1, 0, 4);
 
         switch (estadoActual)
@@ -115,23 +122,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     public void ApplySkin(int id)
     {
         skinID = Mathf.Clamp(id, 1, 5);
-        SetEstado(estadoActual == Estado.WALK ? Estado.WALK : Estado.IDLE);
+        RefreshVisual();
     }
 
     // ===== USADO POR PlayerNetcode =====
     public void ForceIdleVisual()
     {
-        ApplySkin(skinID);
+        estadoActual = Estado.IDLE;
+        RefreshVisual();
     }
 
     public void ForceWalkVisual()
     {
-        animator.enabled = true;
-        int i = Mathf.Clamp(skinID - 1, 0, 4);
-        animator.runtimeAnimatorController = walkAnimators[i];
-        animator.Play("Walk", 0, 0f);
+        estadoActual = Estado.WALK;
+        RefreshVisual();
     }
 }
