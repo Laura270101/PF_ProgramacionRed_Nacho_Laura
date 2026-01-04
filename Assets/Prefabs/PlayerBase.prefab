@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8045281404801096554}
   - component: {fileID: 5403968628338847320}
   - component: {fileID: -5755307269780407943}
+  - component: {fileID: -6215885920860539578}
   m_Layer: 0
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -129,7 +130,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -193,15 +194,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 570edfe8421569844b383fff6dfd3ecb, type: 3}
   - {fileID: 21300000, guid: cd6c19b1fb2e08848863f81aef9ff5d2, type: 3}
   - {fileID: 21300000, guid: 2d9623d38fd64de40b21658b2b617573, type: 3}
-  kickSprites:
-  - {fileID: 21300000, guid: e0ac0a0b7b716704a906d20f14e9caff, type: 3}
-  - {fileID: 21300000, guid: 1ed9393559d9fca4a85ed629862e1c07, type: 3}
-  - {fileID: 21300000, guid: 91972be00c3a6db428b4033cb7608929, type: 3}
-  - {fileID: 21300000, guid: ed85dd12b043e704b8bf99181f25e906, type: 3}
-  - {fileID: 21300000, guid: 2651e4c5038aaae44aa445f55020b52a, type: 3}
   canControl: 0
-  kickDuration: 0.35
-  hiddenAlpha: 0.85
 --- !u!114 &-3193198727523885215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,10 +281,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerMovement: {fileID: 3082396883596998214}
   spriteRenderer: {fileID: 6099953176905248061}
-  isHidden:
-    m_InternalValue: 0
-  hideTimeLeft:
-    m_InternalValue: 0
   skinID:
     m_InternalValue: 1
   estado:
@@ -302,6 +291,10 @@ MonoBehaviour:
     m_InternalValue: 0
   movBloqueado:
     m_InternalValue: 0
+  isHidden:
+    m_InternalValue: 0
+  currentHideSpotId:
+    m_InternalValue: 18446744073709551615
 --- !u!114 &8045281404801096554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,3 +351,18 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   offset: {x: 0, y: 0, z: -10}
   smoothSpeed: 10
+--- !u!114 &-6215885920860539578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276716649494166362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da7f5609e61c4b4e9fc193ae560f9d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUD
+  ShowTopMostFoldoutHeaderGroup: 1
+  txtRol: {fileID: 0}
+  txtVecesPillado: {fileID: 0}

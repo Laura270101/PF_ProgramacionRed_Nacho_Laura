@@ -13,30 +13,38 @@ public class PillarTrigger : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Solo el owner ejecuta la detección (para no duplicar llamadas)
         if (!IsOwner) return;
+
         if (cd > 0f) return;
         if (RoleManager.Instance == null) return;
 
-        // Solo seeker
+        // Solo el seeker puede pillar por contacto
         if (RoleManager.Instance.seekerId.Value != OwnerClientId) return;
 
         NetworkObject otherNetObj = other.GetComponentInParent<NetworkObject>();
         if (otherNetObj == null) return;
+
         if (otherNetObj.OwnerClientId == OwnerClientId) return;
+
+        // Si el otro está escondido, NO se puede pillar por contacto
+        var otherPlayerNet = otherNetObj.GetComponent<PlayerNetcode>();
+        if (otherPlayerNet != null && otherPlayerNet.isHidden.Value) return;
 
         cd = cooldown;
 
-        Debug.Log($"[PillarTrigger] TRY CATCH -> seeker={OwnerClientId} caught={otherNetObj.OwnerClientId}");
+        Debug.Log($"[PillarTrigger] TOUCH CATCH -> seeker={OwnerClientId} caught={otherNetObj.OwnerClientId}");
 
-        // CAMBIO: USAMOS LA FUNCIÓN CENTRAL
-        if (NetworkManager.Singleton.IsServer)
-        {
-            RoleManager.Instance.ProcessCatchServer(OwnerClientId, otherNetObj.OwnerClientId);
-        }
-        else
-        {
-            // Si quieres mantener esto en cliente, habría que hacer un RPC al server,
-            // pero como ya estás avanzando con HideSpots, puedes dejar este trigger sin usar.
-        }
+        // Pedimos al servidor que procese la pillada
+        RequestTouchCatchServerRpc(otherNetObj.OwnerClientId);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Owner)]
+    private void RequestTouchCatchServerRpc(ulong caughtClientId)
+    {
+        if (!IsServer) return;
+        if (RoleManager.Instance == null) return;
+
+        RoleManager.Instance.ProcessCatchServer(OwnerClientId, caughtClientId);
     }
 }
